@@ -1,0 +1,41 @@
+---
+version: '3.7'
+#last version 3.7 required 18.06+ of docker: https://docs.docker.com/compose/compose-file/
+
+## START BLOCK ##
+services:
+  base:
+    image: lifeci/onbuild:base${BuildNo}
+    build:
+      args:
+        - DebianV=9.5-slim
+        - VirtEnvV=16.0.0
+      context: ./base
+      dockerfile: Dockerfile
+## END BLOCK ##
+
+## START BLOCK ##
+  docker:
+    depends_on:
+      - base
+    image: lifeci/onbuild:docker${BuildNo}
+    build:
+      args:
+        - AWScliV=1.11.156
+        - DockerV=18.06.0~ce~3-0~debian
+        - DockerComposeV=1.22.0   #https://github.com/docker/compose/releases
+      context: ./docker
+      dockerfile: Dockerfile
+## END BLOCK ##
+
+## START BLOCK ##
+  aws:
+    depends_on:
+      - base
+    image: lifeci/onbuild:aws${BuildNo}
+    build:
+      args:
+        - AWScliV=1.11.156
+      context: ./aws
+      dockerfile: Dockerfile
+## END BLOCK ##
