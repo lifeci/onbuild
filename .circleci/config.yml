@@ -20,8 +20,9 @@ jobs:
           command: |
               docker --version; docker-compose --version;
 
-      - setup_remote_docker:  #https://circleci.com/docs/2.0/building-docker-images/#docker-version
-          version: 17.07.0-ce
+      #https://circleci.com/docs/2.0/building-docker-images/#docker-version
+      - setup_remote_docker:
+          version: 18.05.0-ce
     - run:
           name: Login to DockerHub
           command: docker login -u $Un -p $Up
