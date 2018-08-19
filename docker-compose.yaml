@@ -21,6 +21,7 @@ services:
     image: lifeci/onbuild:docker${CIRCLE_BUILD_NUM}
     build:
       args:
+        - CIRCLE_BUILD_NUM=${CIRCLE_BUILD_NUM}
         - DockerV=18.06.0~ce~3-0~debian
         - DockerComposeV=1.22.0   #https://github.com/docker/compose/releases
       context: ./docker
@@ -34,6 +35,7 @@ services:
     image: lifeci/onbuild:aws${CIRCLE_BUILD_NUM}
     build:
       args:
+        - CIRCLE_BUILD_NUM=${CIRCLE_BUILD_NUM}
         - AWScliV=1.11.156
       context: ./aws
       dockerfile: Dockerfile

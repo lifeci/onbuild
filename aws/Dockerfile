@@ -1,3 +1,4 @@
+ARG CIRCLE_BUILD_NUM
 FROM lifeci/onbuild:base${CIRCLE_BUILD_NUM}
 MAINTAINER rj-lifeci
 ARG AWScliV
