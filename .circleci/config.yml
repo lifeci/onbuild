@@ -11,15 +11,14 @@ jobs:
   mainjob:
     <<: *defaults
     environment:
-      - RepoRegion: eu-west-1
-      - AWS_ACCOUNT_ID: '822227904112'
+      - BuildNo: ${CIRCLE_BUILD_NUM}
     steps:
       - checkout
       - run:
           name: check docker version
           command: |
               docker --version; docker-compose --version;
-              
+
       #https://circleci.com/docs/2.0/building-docker-images/#docker-version
       - setup_remote_docker:
           version: 18.05.0-ce
