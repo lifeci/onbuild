@@ -5,7 +5,7 @@ version: '3.3'
 ## START BLOCK ##
 services:
   base:
-    image: lifeci/onbuild:base${BuildNo}
+    image: lifeci/onbuild:base${CIRCLE_BUILD_NUM}
     build:
       args:
         - DebianV=9.5-slim
@@ -18,7 +18,7 @@ services:
   docker:
     depends_on:
       - base
-    image: lifeci/onbuild:docker${BuildNo}
+    image: lifeci/onbuild:docker${CIRCLE_BUILD_NUM}
     build:
       args:
         - AWScliV=1.11.156
@@ -32,7 +32,7 @@ services:
   aws:
     depends_on:
       - base
-    image: lifeci/onbuild:aws${BuildNo}
+    image: lifeci/onbuild:aws${CIRCLE_BUILD_NUM}
     build:
       args:
         - AWScliV=1.11.156
