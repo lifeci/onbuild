@@ -1,0 +1,66 @@
+---
+# circleci config validate -c .circleci/config.yml     | https://circleci.com/docs/2.0/local-jobs/
+defaults: &defaults
+  docker:
+  # The primary container is an instance of the first list image listed. Your build commands run in this container.
+    - image: glazeus/onbuild@sha256:b2fff28438861405297e989415c15c70f695f7ef87e88afef50eeabd10a44cf0
+  # The secondary container is an instance of the second listed image which is run in a common network where ports exposed on the primary container are available on localhost.
+
+version: 2
+jobs:
+  mainjob:
+    <<: *defaults
+    environment:
+      - RepoRegion: eu-west-1
+      - AWS_ACCOUNT_ID: '822227904112'
+    steps:
+      - checkout
+      - run:
+          name: check docker version
+          command: |
+              docker --version; docker-compose --version;
+
+      - setup_remote_docker:
+          version: 18.03.0-ce
+    - run:
+          name: Login to DockerHub
+          command: docker login -u $Un -p $Up
+      - run:
+          name: Check docker-compose config
+          command: |
+            docker-compose config --services
+      - run:
+          name: build locally
+          command: docker-compose build
+
+#      - run:
+#          name: check locally (test via proxy if possible)
+#          command: docker-compose up -d; curl ...
+
+      - deploy:
+          name: Delivery 'develop'
+          command: |
+            if [ "${CIRCLE_BRANCH}" == "develop" ]; then
+              echo "dev not used yet";
+            else
+              echo "nothing to do at ${CIRCLE_BRANCH}"
+            fi
+      - deploy:
+          name: Delivery 'master'
+          command: |
+            if [ "${CIRCLE_BRANCH}" == "master" ]; then
+              docker-compose push
+            else
+              echo "nothing to do at ${CIRCLE_BRANCH}"
+            fi
+
+workflows:
+  version: 2
+  build_and_test:
+    jobs:
+      - mainjob:
+          filters:
+            branches:
+              only:
+                - develop
+                - master
