@@ -1,5 +1,5 @@
 ---
-version: '3.3'
+version: '3.7'
 #last version 3.7 required 18.06+ of docker: https://docs.docker.com/compose/compose-file/
 
 ## START BLOCK ##
@@ -21,7 +21,6 @@ services:
     image: lifeci/onbuild:docker${CIRCLE_BUILD_NUM}
     build:
       args:
-        - AWScliV=1.11.156
         - DockerV=18.06.0~ce~3-0~debian
         - DockerComposeV=1.22.0   #https://github.com/docker/compose/releases
       context: ./docker
