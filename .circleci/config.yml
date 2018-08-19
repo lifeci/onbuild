@@ -3,7 +3,7 @@
 defaults: &defaults
   docker:
   # The primary container is an instance of the first list image listed. Your build commands run in this container.
-    - image: lifeci/onbuild:base13
+    - image: lifeci/onbuild:docker13
       #glazeus/onbuild@sha256:b2fff28438861405297e989415c15c70f695f7ef87e88afef50eeabd10a44cf0
   # The secondary container is an instance of the second listed image which is run in a common network where ports exposed on the primary container are available on localhost.
 
