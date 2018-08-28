@@ -1,5 +1,5 @@
 ---
-version: '3.7'
+version: '3.6'
 #last version 3.7 required 18.06+ of docker: https://docs.docker.com/compose/compose-file/
 
 ## START BLOCK ##
@@ -39,4 +39,16 @@ services:
         - AWScliV=1.11.156
       context: ./aws
       dockerfile: Dockerfile
+## END BLOCK ##
+
+## START BLOCK ##
+  ansible:
+    #depends_on:
+    #  - base
+    image: lifeci/onbuild:ansible${CIRCLE_BUILD_NUM}
+    build:
+      args:
+        #- CIRCLE_BUILD_NUM=${CIRCLE_BUILD_NUM}
+        - AnsibleV=2.6.3
+      context: ./ansible
 ## END BLOCK ##
