@@ -6,12 +6,16 @@ _CircleCi status(s) per branch_: master: [![CircleCI](https://circleci.com/gh/li
 - Stateles containers with pre-installed tools
 - Default OS: Linux.  If required feel free to contribute changes for Windows/MacOs platform
 
+## Links
+- Github Organization: https://github.com/lifeci
+- CI/CD by CircleCi: https://circleci.com/gh/lifeci/onbuild
+- DockerHub repo: https://hub.docker.com/r/lifeci/onbuild
+
 ## Reason(s)
 - building/spinup ci/cd pipelines
 
 ## ImageRepo
 - Usage: `docker run lifeci/onbuild:aws15 aws --version`
-- Link to DockerHub: https://hub.docker.com/r/lifeci/onbuild/tags/
 - Tags: https://hub.docker.com/r/lifeci/onbuild/tags/
 
 ## ToDo
@@ -21,6 +25,6 @@ _CircleCi status(s) per branch_: master: [![CircleCI](https://circleci.com/gh/li
  - [ ] Prepare main PID 1 to accept triggers related to the tool
  - [ ] Build containers separate by tooling
  - [ ] Make sets based on usage: CI/CD tools, CloudCLIs, IaC tools, etc
- 
+
  ## License
  Opensource
