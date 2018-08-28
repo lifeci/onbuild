@@ -1,7 +1,8 @@
-ARG CIRCLE_BUILD_NUM
-FROM lifeci/onbuild:base${CIRCLE_BUILD_NUM}
+ARG BuildNo
+FROM lifeci/onbuild:base${BuildNo}
 MAINTAINER rj-lifeci
 ARG AWScliV
+ARG BuildNo
+RUN echo "$BuildNo" > ./BuildNo
 RUN pip install awscli==${AWScliV}
-RUN aws --version
-CMD ["bash"]
+CMD printf "USAGE:\t docker run --rm lifeci/onbuild:aws$(cat ./BuildNo) aws --help\n"

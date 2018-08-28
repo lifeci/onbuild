@@ -3,6 +3,8 @@
 FROM alpine:3.8
 MAINTAINER rj-lifeci
 ARG AnsibleV=2.6.1
+ARG BuildNo
+RUN echo "$BuildNo" > ./BuildNo
 RUN  apk --update add sudo python py-pip openssl ca-certificates; \
      apk --update add --virtual build-dependencies python-dev \
      libffi-dev openssl-dev build-base; \
@@ -16,4 +18,5 @@ ARG UsrName=auser
 ARG UsrUID=1000
 RUN addgroup -g ${GrpUID} ${GrpName}; adduser -D -u ${UsrUID} ${UsrName} -G ${GrpName};
 USER ${UsrName}
-CMD  whoami; uname -r; uname -a; ansible --version; ansible-playbook --version;
+RUN  whoami;uname -a;
+CMD printf "USAGE:\t docker run --rm lifeci/onbuild:ansible$(cat ./BuildNo) ansible --help\n"

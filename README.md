@@ -21,9 +21,9 @@ _CircleCi status(s) per branch_: master: [![CircleCI](https://circleci.com/gh/li
 ## ToDo
  - [ ] Add initial behavior like: if Parameter1 exist do login
  - [ ] Data persistent via mapped volumes
- - [ ] Set CMD and entrypoint per tool(s).
+ - [x] Set CMD and entrypoint per tool(s).
  - [ ] Prepare main PID 1 to accept triggers related to the tool
- - [ ] Build containers separate by tooling
+ - [x] Build containers separate by tooling
  - [ ] Make sets based on usage: CI/CD tools, CloudCLIs, IaC tools, etc
 
  ## License

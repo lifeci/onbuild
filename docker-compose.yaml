@@ -6,8 +6,10 @@ version: '3.6'
 services:
   base:
     image: lifeci/onbuild:base${CIRCLE_BUILD_NUM}
+    entrypoint: bash -c 'uname -a'
     build:
       args:
+        - BuildNo=${CIRCLE_BUILD_NUM}
         - DebianV=9.5-slim
         - VirtEnvV=16.0.0
       context: ./base
@@ -19,9 +21,10 @@ services:
     depends_on:
       - base
     image: lifeci/onbuild:docker${CIRCLE_BUILD_NUM}
+    entrypoint: docker --version
     build:
       args:
-        - CIRCLE_BUILD_NUM=${CIRCLE_BUILD_NUM}
+        - BuildNo=${CIRCLE_BUILD_NUM}
         - DockerV=18.06.0~ce~3-0~debian
         - DockerComposeV=1.22.0   #https://github.com/docker/compose/releases
       context: ./docker
@@ -33,9 +36,10 @@ services:
     depends_on:
       - base
     image: lifeci/onbuild:aws${CIRCLE_BUILD_NUM}
+    entrypoint: aws --version
     build:
       args:
-        - CIRCLE_BUILD_NUM=${CIRCLE_BUILD_NUM}
+        - BuildNo=${CIRCLE_BUILD_NUM}
         - AWScliV=1.11.156
       context: ./aws
       dockerfile: Dockerfile
@@ -46,9 +50,10 @@ services:
     #depends_on:
     #  - base
     image: lifeci/onbuild:ansible${CIRCLE_BUILD_NUM}
+    entrypoint: ansible --version
     build:
       args:
-        #- CIRCLE_BUILD_NUM=${CIRCLE_BUILD_NUM}
+        - BuildNo=${CIRCLE_BUILD_NUM}
         - AnsibleV=2.6.3
       context: ./ansible
 ## END BLOCK ##
