@@ -1,5 +1,5 @@
-#ARG CIRCLE_BUILD_NUM
-FROM lifeci/onbuild:base${CIRCLE_BUILD_NUM}
+ARG BuildNo
+FROM lifeci/onbuild:base${BuildNo}
 MAINTAINER rj-lifeci
 ARG AnsibleV=2.6.1
 ARG BuildNo

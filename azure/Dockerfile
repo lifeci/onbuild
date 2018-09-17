@@ -1,5 +1,5 @@
-#ARG CIRCLE_BUILD_NUM
-#FROM lifeci/onbuild:base${CIRCLE_BUILD_NUM}
+#ARG BuildNo
+#FROM lifeci/onbuild:base${BuildNo}
 FROM alpine:3.8
 MAINTAINER rj-lifeci
 ARG AZURE_CLI_VERSION="2.0"

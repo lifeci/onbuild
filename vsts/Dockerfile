@@ -1,4 +1,5 @@
-FROM lifeci/onbuild:base${CIRCLE_BUILD_NUM}
+ARG BuildNo
+FROM lifeci/onbuild:base${BuildNo}
 MAINTAINER rj-lifeci
 #ENV DEBIAN_FRONTEND=noninteractive
 #RUN echo "APT::Get::Assume-Yes \"true\";" > /etc/apt/apt.conf.d/90assumeyes
