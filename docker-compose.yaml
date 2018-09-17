@@ -46,14 +46,104 @@ services:
 ## END BLOCK ##
 
 ## START BLOCK ##
-  ansible:
+  # ssh-keygen -b 2048 -t rsa -f ~/.ssh/id_rsa-vtx -q -N ""
+  ansible_alpine:
     #depends_on:
     #  - base
-    image: lifeci/onbuild:ansible${CIRCLE_BUILD_NUM}
-    entrypoint: ansible --version
+    image: lifeci/onbuild:ansible_alpine${CIRCLE_BUILD_NUM}
+    #entrypoint: ansible --version
+    entrypoint: sleep 1d
     build:
       args:
         - BuildNo=${CIRCLE_BUILD_NUM}
         - AnsibleV=2.6.3
       context: ./ansible
+      dockerfile: Dockerfile_alpine
+    volumes:
+       - ${HOME}/.ssh/id_rsa-vtx:/etc/ssh/id_rsa:ro
+       - ${HOME}/.ssh/id_rsa-vtx.pub:/etc/ssh/id_rsa.pub:ro
+## END BLOCK ##
+
+## START BLOCK ##
+  # ssh-keygen -b 2048 -t rsa -f ~/.ssh/id_rsa-vtx -q -N ""
+  ansible:
+    depends_on:
+      - base
+    image: lifeci/onbuild:ansible${CIRCLE_BUILD_NUM}
+    #entrypoint: ansible --version
+    entrypoint: ansible --version
+    build:
+      args:
+        - BuildNo=${CIRCLE_BUILD_NUM}
+        - AnsibleV=2.6.4
+      context: ./ansible
+      dockerfile: Dockerfile
+    volumes:
+       - ${HOME}/.ssh/id_rsa-vtx:/etc/ssh/id_rsa:ro
+       - ${HOME}/.ssh/id_rsa-vtx.pub:/etc/ssh/id_rsa.pub:ro
+## END BLOCK ##
+
+
+## START BLOCK ##
+  azure:
+    #depends_on:
+    #  - base
+    image: lifeci/onbuild:azure${CIRCLE_BUILD_NUM}
+    #entrypoint: az --version
+    build:
+      args:
+        - BuildNo=${CIRCLE_BUILD_NUM}
+        #- AWScliV=1.11.156
+      context: ./azure
+      dockerfile: Dockerfile
+## END BLOCK ##
+
+
+## START BLOCK ##
+  vsts:
+    #depends_on:
+    #  - base
+    image: lifeci/onbuild:vsts${CIRCLE_BUILD_NUM}
+    entrypoint:  cat /vsts/start.sh
+    # /vsts/agent/bin/Agent.Listener --version
+
+      #agent/bin/Agent.Listener --version
+    build:
+      args:
+        - BuildNo=${CIRCLE_BUILD_NUM}
+        #- AWScliV=1.11.156
+      context: ./vsts
+      dockerfile: Dockerfile
+    environment:
+      - VSTS_AGENT=agent-test
+      - VSTS_WORK=/tmp/_work
+      - VSTS_ACCOUNT=YOUR_VSTS_ACCOUNT
+      - VSTS_POOL=YOUR_VSTS_AGENT_POOL
+      - VSTS_TOKEN=YOUR_VSTS_TOKEN
+## END BLOCK ##
+
+#
+##
+### RUN-TIME ONLY ###
+##
+#
+
+## START BLOCK ##
+  # docker-compose build node0; docker-compose scale node0=3
+  node0:
+    #image: centos:centos7.5.1804
+    #entrypoint: yum -y install openssh-server; chkconfig sshd on; /usr/sbin/sshd -D
+#    command:
+    build:
+      args:
+        - BuildNo=${CIRCLE_BUILD_NUM}
+        #- AWScliV=1.11.156
+      context: ./node0
+      dockerfile: Dockerfile
+    environment:
+      - ROOT_PASS=p2
+    ports:
+      - 2201-2210:22
+    volumes:
+       - ${HOME}/.ssh/id_rsa-vtx.pub:/etc/ssh/id_rsa.pub:ro
 ## END BLOCK ##
