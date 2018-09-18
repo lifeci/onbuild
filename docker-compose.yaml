@@ -101,8 +101,8 @@ services:
 
 ## START BLOCK ##
   vsts:
-    #depends_on:
-    #  - base
+    depends_on:
+      - base
     image: lifeci/onbuild:vsts${CIRCLE_BUILD_NUM}
     entrypoint:  cat /vsts/start.sh
     # /vsts/agent/bin/Agent.Listener --version
@@ -121,6 +121,52 @@ services:
       - VSTS_POOL=YOUR_VSTS_AGENT_POOL
       - VSTS_TOKEN=YOUR_VSTS_TOKEN
 ## END BLOCK ##
+
+
+## START BLOCK ##
+  vstsansible:
+    depends_on:
+      - vsts
+    image: lifeci/onbuild:vstsansible${CIRCLE_BUILD_NUM}
+    entrypoint: ansible --version
+    build:
+      args:
+        - BuildNo=${CIRCLE_BUILD_NUM}
+        - AnsibleV=2.6.4
+        #- AWScliV=1.11.156
+      context: ./vsts/ansible
+      dockerfile: Dockerfile
+    environment:
+      - VSTS_AGENT=agent-test
+      - VSTS_WORK=/tmp/_work
+      - VSTS_ACCOUNT=YOUR_VSTS_ACCOUNT
+      - VSTS_POOL=YOUR_VSTS_AGENT_POOL
+      - VSTS_TOKEN=YOUR_VSTS_TOKEN
+## END BLOCK ##
+
+## START BLOCK ##
+  vstsansibledocker:
+    depends_on:
+      - vstsansible
+    image: lifeci/onbuild:vstsansibledocker${CIRCLE_BUILD_NUM}
+    entrypoint: docker --version
+    build:
+      args:
+        - BuildNo=${CIRCLE_BUILD_NUM}
+        - AnsibleV=2.6.4
+        - DockerV=18.03.1~ce-0~debian
+        - DockerComposeV=1.22.0   #https://github.com/docker/compose/releases
+      context: ./ #./vsts/ansible/docker
+      dockerfile: ./vsts/ansible/docker/Dockerfile #Dockerfile
+    environment:
+      - VSTS_AGENT=agent-test
+      - VSTS_WORK=/tmp/_work
+      - VSTS_ACCOUNT=YOUR_VSTS_ACCOUNT
+      - VSTS_POOL=YOUR_VSTS_AGENT_POOL
+      - VSTS_TOKEN=YOUR_VSTS_TOKEN
+
+## END BLOCK ##
+
 
 #
 ##
