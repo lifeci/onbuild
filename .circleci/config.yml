@@ -31,8 +31,8 @@ jobs:
           command: |
             docker-compose config --services
       - run:
-          name: build locally
-          command: docker-compose build
+          name: build and up locally
+          command: docker-compose up -d --build
 
 #      - run:
 #          name: check locally (test via proxy if possible)
