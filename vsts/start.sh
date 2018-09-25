@@ -12,7 +12,7 @@ if [ -n "$VSTS_ACCOUNT" ]; then
 elif [ -n "$TFS_HOST" ] || [ -n "$TFS_URL" ]; then
   echo "START TFS: TFS_HOST is $TFS_HOST; TFS_URL is $TFS_URL"
   set -x
-  curl -fSL $VSTS_AGENT_URL -o agent.tgz; mkdir agent; cd agent;
+  curl -fSL $VSTS_AGENT_URL -o agent.tgz; mkdir -p agent; cd agent;
   tar -xz --no-same-owner -f ../agent.tgz; cd ..; rm agent.tgz
   ./start_TFS.sh
 else
