@@ -27,7 +27,7 @@ RUN mkdir -p "/root/.microsoft/Team Foundation/4.0/Configuration/TEE-Mementos" \
 
 WORKDIR /vsts
 
-COPY ./start.sh .
+COPY ./start*.sh ./
 RUN chmod +x start.sh; chmod 777 -R /vsts
 RUN ls -la  /vsts
 CMD ["./start.sh"]
