@@ -123,6 +123,19 @@ services:
       - VSTS_TOKEN=YOUR_VSTS_TOKEN
 ## END BLOCK ##
 
+## START BLOCK ##
+  vstssql:
+    depends_on:
+      - vsts
+    image: lifeci/onbuild:vstssql${CIRCLE_BUILD_NUM}
+    entrypoint: sqlcmd
+    # && echo "sqlpackage: $(sqlpackage | grep SqlPackage)"
+    build:
+      args:
+        - BuildNo=${CIRCLE_BUILD_NUM}
+      context: ./vsts/sql
+      dockerfile: Dockerfile
+## END BLOCK ##
 
 ## START BLOCK ##
   vstsansible:
