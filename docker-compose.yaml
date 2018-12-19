@@ -128,8 +128,8 @@ services:
     depends_on:
       - vsts
     image: lifeci/onbuild:vstssql${CIRCLE_BUILD_NUM}
-    entrypoint: sqlcmd
-    # && echo "sqlpackage: $(sqlpackage | grep SqlPackage)"
+    entrypoint: sqlpackage
+    #entrypoint: sqlcmd 
     build:
       args:
         - BuildNo=${CIRCLE_BUILD_NUM}

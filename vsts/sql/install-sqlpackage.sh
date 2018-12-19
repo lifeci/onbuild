@@ -12,5 +12,5 @@ unzip /tmp/sqlpackage.zip
 
 chmod +x /opt/sqlpackage/sqlpackage
 
-echo 'export PATH="$PATH:/opt/sqlpackage"' >> /etc/bash.bashrc
-source /etc/bash.bashrc
+#echo 'export PATH="$PATH:/opt/sqlpackage"' >> /etc/bash.bashrc
+#source /etc/bash.bashrc

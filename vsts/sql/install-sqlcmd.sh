@@ -15,5 +15,5 @@ echo "en_US.UTF-8 UTF-8" > /etc/locale.gen;
 locale-gen
 
 # add to path
-echo 'export PATH="$PATH:/opt/mssql-tools/bin"' >> /etc/bash.bashrc
-source /etc/bash.bashrc
+#echo 'export PATH="$PATH:/opt/mssql-tools/bin"' >> /etc/bash.bashrc
+#source /etc/bash.bashrc
