@@ -24,6 +24,7 @@ services:
     entrypoint: docker --version
     build:
       args:
+        - BasedOn=base
         - BuildNo=${CIRCLE_BUILD_NUM}
         - DockerV=18.06.0~ce~3-0~debian
         - DockerComposeV=1.22.0   #https://github.com/docker/compose/releases
@@ -39,6 +40,7 @@ services:
     entrypoint: aws --version
     build:
       args:
+        - BasedOn=base
         - BuildNo=${CIRCLE_BUILD_NUM}
         - AWScliV=1.11.156
       context: ./aws
@@ -115,12 +117,11 @@ services:
       context: ./vsts
       dockerfile: Dockerfile
     environment:
-      - VSTS_AGENT=agent-test
-      - VSTS_WORK=/tmp/_work
-      - VSTS_ACCOUNT=YOUR_VSTS_ACCOUNT
-      #- TFS_HOST=YOUR_TFS_ACCOUNT
-      - VSTS_POOL=YOUR_VSTS_AGENT_POOL
-      - VSTS_TOKEN=YOUR_VSTS_TOKEN
+      - VSTS_AGENT=${VSTS_AGENT}
+      - VSTS_WORK=${VSTS_WORK}
+      - VSTS_ACCOUNT=${VSTS_ACCOUNT}
+      - VSTS_POOL=${VSTS_POOL}
+      - VSTS_TOKEN=${VSTS_TOKEN}
 ## END BLOCK ##
 
 ## START BLOCK ##
@@ -151,11 +152,7 @@ services:
       context: ./vsts/ansible
       dockerfile: Dockerfile
     environment:
-      - VSTS_AGENT=agent-test
-      - VSTS_WORK=/tmp/_work
-      - VSTS_ACCOUNT=YOUR_VSTS_ACCOUNT
-      - VSTS_POOL=YOUR_VSTS_AGENT_POOL
-      - VSTS_TOKEN=YOUR_VSTS_TOKEN
+      - Key=Val
 ## END BLOCK ##
 
 ## START BLOCK ##
@@ -173,13 +170,63 @@ services:
       context: ./ #./vsts/ansible/docker
       dockerfile: ./vsts/ansible/docker/Dockerfile #Dockerfile
     environment:
-      - VSTS_AGENT=agent-test
-      - VSTS_WORK=/tmp/_work
-      - VSTS_ACCOUNT=YOUR_VSTS_ACCOUNT
-      - VSTS_POOL=YOUR_VSTS_AGENT_POOL
-      - VSTS_TOKEN=YOUR_VSTS_TOKEN
-
+      - Key=Val
 ## END BLOCK ##
+
+
+## START BLOCK ##
+  vstsdocker:
+    depends_on:
+      - vsts
+    image: lifeci/onbuild:vstsdocker${CIRCLE_BUILD_NUM}
+    entrypoint: docker --version
+    build:
+      args:
+        - BasedOn=vsts
+        - BuildNo=${CIRCLE_BUILD_NUM}
+        - DockerV=18.03.1~ce-0~debian
+        - DockerComposeV=1.22.0   #https://github.com/docker/compose/releases
+      context: ./ #./vsts/ansible/docker
+      dockerfile: ./vsts/docker/Dockerfile #Dockerfile
+    environment:
+      - Key=Val
+## END BLOCK ##
+
+## START BLOCK ##
+  vstsaws:
+    depends_on:
+      - vsts
+    image: lifeci/onbuild:vstsaws${CIRCLE_BUILD_NUM}
+    entrypoint: aws --version
+    build:
+      args:
+        - BasedOn=vsts
+        - BuildNo=${CIRCLE_BUILD_NUM}
+        - AWScliV=1.11.156 #1.16.102
+      context: ./ #./vsts/ansible/docker
+      dockerfile: ./vsts/aws/Dockerfile #Dockerfile
+    environment:
+      - Key=Val
+## END BLOCK ##
+
+## START BLOCK ##
+  vstsk8s:
+    depends_on:
+      - vsts
+    image: lifeci/onbuild:vstsk8s${CIRCLE_BUILD_NUM}
+    entrypoint: kubectl version --client=true
+    build:
+      args:
+        - BasedOn=vsts
+        - BuildNo=${CIRCLE_BUILD_NUM}
+        - K8sCliV=v1.13.3
+        - AWSiamV=1.11.5/2018-12-06
+      context: ./ #./vsts/ansible/docker
+      dockerfile: ./vsts/k8s/Dockerfile #Dockerfile
+    environment:
+      - Key=Val
+## END BLOCK ##
+
 
 ## START BLOCK ##
   # docker-compose build node0; docker-compose scale node0=3

@@ -1,5 +1,6 @@
+ARG BasedOn=base
 ARG BuildNo
-FROM lifeci/onbuild:base${BuildNo}
+FROM lifeci/onbuild:${BasedOn}${BuildNo}
 MAINTAINER rj-lifeci
 ARG AnsibleV=2.6.1
 ARG BuildNo

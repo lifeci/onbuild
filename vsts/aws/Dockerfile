@@ -1,5 +1,5 @@
 ARG BuildNo
-ARG BasedOn=base
+ARG BasedOn=vsts
 FROM lifeci/onbuild:${BasedOn}${BuildNo}
 MAINTAINER rj-lifeci
 ARG AWScliV

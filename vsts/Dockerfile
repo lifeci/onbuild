@@ -1,5 +1,6 @@
+ARG BasedOn=base
 ARG BuildNo
-FROM lifeci/onbuild:base${BuildNo}
+FROM lifeci/onbuild:${BasedOn}${BuildNo}
 MAINTAINER rj-lifeci
 #ENV DEBIAN_FRONTEND=noninteractive
 #RUN echo "APT::Get::Assume-Yes \"true\";" > /etc/apt/apt.conf.d/90assumeyes

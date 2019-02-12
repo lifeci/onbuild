@@ -1,5 +1,6 @@
+ARG BasedOn=vsts
 ARG BuildNo
-FROM lifeci/onbuild:vsts${BuildNo}
+FROM lifeci/onbuild:${BasedOn}${BuildNo}
 
 ADD ./install-sqlpackage.sh ./scripts/
 RUN sh -c ./scripts/install-sqlpackage.sh

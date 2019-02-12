@@ -1,5 +1,6 @@
+ARG BasedOn=vstsansible
 ARG BuildNo
-FROM lifeci/onbuild:vstsansible${BuildNo}
+FROM lifeci/onbuild:${BasedOn}${BuildNo}
 ARG DockerV
 ARG DockerComposeV
 
