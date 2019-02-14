@@ -3,8 +3,15 @@ set -e
 
 export VSO_AGENT_IGNORE=_,MAIL,OLDPWD,PATH,PWD,VSTS_AGENT,VSTS_ACCOUNT,VSTS_TOKEN_FILE,VSTS_TOKEN,VSTS_POOL,VSTS_WORK,VSO_AGENT_IGNORE
 
-VSTS_AGENT_VERSION='2.140.0'
+VSTS_AGENT_VERSION=${VSTS_AGENT_VERSION}
 VSTS_AGENT_URL="https://vstsagentpackage.azureedge.net/agent/${VSTS_AGENT_VERSION}/vsts-agent-linux-x64-${VSTS_AGENT_VERSION}.tar.gz"
+
+# Sending KILL signals to all child processes
+#SIGTERM is 15 | SIGINT is 2 | SIGKILL is 9
+trap "echo "Got SIGTERM"; killall5 15" TERM
+trap "echo "Got SIGINT"; killall5 2" INT
+trap "echo "Got SIGKILL"; killall5 9" KILL
+
 echo "$VSTS_AGENT_URL"
 if [ -n "$VSTS_ACCOUNT" ]; then
   echo "START VSTS: VSTS_ACCOUNT is $VSTS_ACCOUNT"

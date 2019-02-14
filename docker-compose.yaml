@@ -122,6 +122,8 @@ services:
       - VSTS_ACCOUNT=${VSTS_ACCOUNT}
       - VSTS_POOL=${VSTS_POOL}
       - VSTS_TOKEN=${VSTS_TOKEN}
+      - VSTS_AGENT_VERSION=2.146.0
+      #https://github.com/Microsoft/azure-pipelines-agent/releases
 ## END BLOCK ##
 
 ## START BLOCK ##
