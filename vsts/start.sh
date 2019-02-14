@@ -8,9 +8,9 @@ VSTS_AGENT_URL="https://vstsagentpackage.azureedge.net/agent/${VSTS_AGENT_VERSIO
 
 # Sending KILL signals to all child processes
 #SIGTERM is 15 | SIGINT is 2 | SIGKILL is 9
-trap "echo "Got SIGTERM"; killall5 15" TERM
-trap "echo "Got SIGINT"; killall5 2" INT
-trap "echo "Got SIGKILL"; killall5 9" KILL
+trap "echo 'Got SIGTERM'; killall5 15" TERM
+trap "echo 'Got SIGINT'; killall5 2" INT
+trap "echo 'Got SIGKILL'; killall5 9" KILL
 
 echo "$VSTS_AGENT_URL"
 if [ -n "$VSTS_ACCOUNT" ]; then
