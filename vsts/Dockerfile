@@ -31,4 +31,6 @@ WORKDIR /vsts
 COPY ./start*.sh ./
 RUN chmod +x start.sh; chmod 777 -R /vsts
 RUN ls -la  /vsts
-CMD ["./start.sh"]
+STOPSIGNAL SIGTERM
+#  SIGTERM -> exit 143' TERM | SIGINT -> exit 130' INT
+ENTRYPOINT ./start.sh
