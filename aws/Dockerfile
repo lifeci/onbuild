@@ -1,9 +1,13 @@
 ARG BuildNo
 ARG BasedOn=base
 FROM lifeci/onbuild:${BasedOn}${BuildNo}
-MAINTAINER rj-lifeci
-ARG AWScliV
 ARG BuildNo
 RUN echo "$BuildNo" > ./BuildNo
-RUN pip install awscli==${AWScliV}
+
+ARG AWScliV
+ARG AWSiamV
+COPY ./*.sh ./
+RUN ./install-aws-cli.sh ${AWScliV}; \
+    ./install-aws-iam-auth.sh ${AWSiamV};
+
 CMD printf "USAGE:\t docker run --rm lifeci/onbuild:aws$(cat ./BuildNo) aws --help\n"

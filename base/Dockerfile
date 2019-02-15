@@ -1,12 +1,15 @@
 ARG DebianV
 FROM debian:${DebianV}
+
+WORKDIR /opt/base
+
 MAINTAINER rj-lifeci
 ARG VirtEnvV
 ARG BuildNo
 RUN echo "$BuildNo" > ./BuildNo
 
 RUN apt update; apt-get install -y --no-install-recommends \
-    python-pip python-setuptools python-wheel jq openssh-client ssh-askpass
+    python-pip python-setuptools python-wheel jq openssh-client curl ssh-askpass
 
 RUN pip install virtualenv==$VirtEnvV
     # package~=15.* | "package>=0.2,<0.3" |

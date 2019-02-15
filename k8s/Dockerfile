@@ -1,7 +1,8 @@
-ARG BasedOn=vsts
+ARG BasedOn=base
 ARG BuildNo
 FROM lifeci/onbuild:${BasedOn}${BuildNo}
 ARG K8sCliV
 
-COPY ./vsts/k8s/*.sh ./
+COPY ./*.sh ./
+
 RUN ./install-k8s.sh ${K8sCliV}

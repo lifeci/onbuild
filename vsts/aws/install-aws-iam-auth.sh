@@ -1,0 +1,1 @@
+../../aws/install-aws-iam-auth.sh

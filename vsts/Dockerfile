@@ -9,7 +9,6 @@ RUN apt update \
         software-properties-common \
         && apt install -y --no-install-recommends \
         apt-utils \
-        curl \
         git \
         jq \
         libcurl3 \

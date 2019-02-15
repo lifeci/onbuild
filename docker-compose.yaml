@@ -43,6 +43,7 @@ services:
         - BasedOn=base
         - BuildNo=${CIRCLE_BUILD_NUM}
         - AWScliV=1.16.105 #1.11.156
+        - AWSiamV=1.11.5/2018-12-06
       context: ./aws
       dockerfile: Dockerfile
 ## END BLOCK ##
@@ -205,8 +206,27 @@ services:
         - BasedOn=vsts
         - BuildNo=${CIRCLE_BUILD_NUM}
         - AWScliV=1.16.105 #1.11.156
+        - AWSiamV=1.11.5/2018-12-06
       context: ./ #./vsts/ansible/docker
       dockerfile: ./vsts/aws/Dockerfile #Dockerfile
+    environment:
+      - Key=Val
+## END BLOCK ##
+
+
+## START BLOCK ##
+  k8s:
+    depends_on:
+      - base
+    image: lifeci/onbuild:k8s${CIRCLE_BUILD_NUM}
+    entrypoint: kubectl version --client=true
+    build:
+      args:
+        - BasedOn=base
+        - BuildNo=${CIRCLE_BUILD_NUM}
+        - K8sCliV=v1.13.3
+      context: ./k8s #./vsts/ansible/docker
+      dockerfile: Dockerfile #Dockerfile
     environment:
       - Key=Val
 ## END BLOCK ##
@@ -222,9 +242,26 @@ services:
         - BasedOn=vsts
         - BuildNo=${CIRCLE_BUILD_NUM}
         - K8sCliV=v1.13.3
-        - AWSiamV=1.11.5/2018-12-06
       context: ./ #./vsts/ansible/docker
       dockerfile: ./vsts/k8s/Dockerfile #Dockerfile
+    environment:
+      - Key=Val
+## END BLOCK ##
+
+
+## START BLOCK ##
+  vstsawsk8s:
+    depends_on:
+      - vstsaws
+    image: lifeci/onbuild:vstsaws${CIRCLE_BUILD_NUM}
+    entrypoint: kubectl version --client=true
+    build:
+      args:
+        - BasedOn=vstsaws
+        - BuildNo=${CIRCLE_BUILD_NUM}
+        - K8sCliV=v1.13.3
+      context: ./ #./vsts/ansible/docker
+      dockerfile: ./vsts/aws/k8s/Dockerfile #Dockerfile
     environment:
       - Key=Val
 ## END BLOCK ##
