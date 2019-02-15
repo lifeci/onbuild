@@ -4,7 +4,7 @@ set -e
 export VSO_AGENT_IGNORE=_,MAIL,OLDPWD,PATH,PWD,VSTS_AGENT,VSTS_ACCOUNT,VSTS_TOKEN_FILE,VSTS_TOKEN,VSTS_POOL,VSTS_WORK,VSO_AGENT_IGNORE
 
 if [ -z $VSTS_AGENT_VERSION ]; then
-  VSTS_AGENT_VERSION=2.140.0;
+  VSTS_AGENT_VERSION=2.146.0; #2.140.0;
 fi;
 
 echo "VSTS_AGENT_VERSION: ${VSTS_AGENT_VERSION}"
@@ -32,10 +32,6 @@ fi
 #SIGTERM is 15 | SIGINT is 2 | SIGKILL is 9
 trap "echo 'Got SIGINT'; kill -SIGINT $PID" INT
 trap "echo 'Got SIGTERM'; kill -SIGTERM $PID" TERM
-
-echo "#!/bin/bash" > /vsts/term.sh
-echo "/vsts/agent/bin/Agent.Listener remove --unattended --auth PAT --token $( cat /vsts/.token )" >> /vsts/term.sh
-chmod +x /vsts/term.sh
 
 exec ./start_$RunAs.sh &
 export PID=$!
