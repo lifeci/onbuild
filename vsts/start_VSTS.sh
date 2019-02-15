@@ -56,11 +56,7 @@ cleanup() {
   fi
 }
 
-# Creating term script for k8s lifecycle.preStop.exec.command:
-echo "#!/bin/bash" > /vsts/term.sh
-echo "/vsts/agent/bin/Agent.Listener remove --unattended --auth PAT --token $( cat ${VSTS_TOKEN_FILE} ) && wait $!" >> /vsts/term.sh
-echo "kill $PID" >> /vsts/term.sh
-chmod +x /vsts/term.sh
+
 
 
 trap 'cleanup; exit 130' INT
@@ -95,6 +91,13 @@ source ./env.sh
   --pool "${VSTS_POOL:-Default}" \
   --work "${VSTS_WORK:-_work}" \
   --replace & wait $!
+
+
+  # Creating term script for k8s lifecycle.preStop.exec.command:
+  echo "#!/bin/bash" > /vsts/term.sh
+  echo "/vsts/agent/bin/Agent.Listener remove --unattended --auth PAT --token $( cat ${VSTS_TOKEN_FILE} ) && wait $!" >> /vsts/term.sh
+  echo "kill $PID" >> /vsts/term.sh
+  chmod +x /vsts/term.sh
 
 web-server &
 ./bin/Agent.Listener run & wait $!
