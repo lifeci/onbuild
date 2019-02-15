@@ -39,7 +39,7 @@ chmod +x /vsts/term.sh
 
 exec ./start_$RunAs.sh &
 export PID=$!
-echo "$PID" > /vst/PID
-echo "Agent PID is $( cat /vst/PID )"
+echo "$PID" > /vsts/PID
+echo "Agent PID is $( cat /vsts/PID )"
 
 # INFO: http://veithen.io/2014/11/16/sigterm-propagation.html
