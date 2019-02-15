@@ -28,9 +28,10 @@ RUN mkdir -p "/root/.microsoft/Team Foundation/4.0/Configuration/TEE-Mementos" \
 
 WORKDIR /vsts
 
-COPY ./start*.sh ./
+COPY ./*.sh ./
 RUN chmod +x start.sh; chmod 777 -R /vsts
 RUN ls -la  /vsts
+
 STOPSIGNAL SIGTERM
 #  SIGTERM -> exit 143' TERM | SIGINT -> exit 130' INT
 ENTRYPOINT ./start.sh
