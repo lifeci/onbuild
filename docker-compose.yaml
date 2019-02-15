@@ -42,7 +42,7 @@ services:
       args:
         - BasedOn=base
         - BuildNo=${CIRCLE_BUILD_NUM}
-        - AWScliV=1.11.156
+        - AWScliV=1.16.105 #1.11.156
       context: ./aws
       dockerfile: Dockerfile
 ## END BLOCK ##
@@ -204,7 +204,7 @@ services:
       args:
         - BasedOn=vsts
         - BuildNo=${CIRCLE_BUILD_NUM}
-        - AWScliV=1.11.156 #1.16.102
+        - AWScliV=1.16.105 #1.11.156
       context: ./ #./vsts/ansible/docker
       dockerfile: ./vsts/aws/Dockerfile #Dockerfile
     environment:
