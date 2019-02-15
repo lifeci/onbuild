@@ -33,7 +33,17 @@ fi
 trap "echo 'Got SIGINT'; kill -SIGINT $PID" INT
 trap "echo 'Got SIGTERM'; kill -SIGTERM $PID" TERM
 
+echo "#!/bin/bash" > /vsts/term.sh
+echo "/vsts/agent/bin/Agent.Listener remove --unattended --auth PAT --token $( cat /vsts/.token )" >> /vsts/term.sh
+chmod +x /vsts/term.sh
+
 exec ./start_$RunAs.sh &
 export PID=$!
 echo "Agent PID is $PID"
+
+echo "#!/bin/bash" > /vsts/term.sh
+echo "/vsts/agent/bin/Agent.Listener remove --unattended --auth PAT --token $( cat /vsts/.token ) && wait $!" >> /vsts/term.sh
+echo "kill $PID" >> /vsts/term.sh
+chmod +x /vsts/term.sh
+
 # INFO: http://veithen.io/2014/11/16/sigterm-propagation.html
