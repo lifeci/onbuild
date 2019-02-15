@@ -30,10 +30,10 @@ else
 fi
 
 #SIGTERM is 15 | SIGINT is 2 | SIGKILL is 9
-trap "echo 'Got SIGINT'; kill -SIGINT $PID" INT
-trap "echo 'Got SIGTERM'; kill -SIGTERM $PID" TERM
+#trap "echo 'Got SIGINT'; kill -SIGINT $PID" INT
+#trap "echo 'Got SIGTERM'; kill -SIGTERM $PID" TERM
 
-exec ./start_$RunAs.sh &
+./start_$RunAs.sh
 export PID=$!
 echo "$PID" > /vsts/PID
 echo "Agent PID is $( cat /vsts/PID )"
