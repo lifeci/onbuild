@@ -26,10 +26,12 @@ services:
       args:
         - BasedOn=base
         - BuildNo=${CIRCLE_BUILD_NUM}
-        - DockerV=18.06.0~ce~3-0~debian
-        - DockerComposeV=1.22.0   #https://github.com/docker/compose/releases
+        - DockerV=5:18.09.2~3-0~debian-stretch
+        - DockerComposeV=1.23.2 #1.22.0   #https://github.com/docker/compose/releases
       context: ./docker
       dockerfile: Dockerfile
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
 ## END BLOCK ##
 
 ## START BLOCK ##
@@ -168,8 +170,8 @@ services:
       args:
         - BuildNo=${CIRCLE_BUILD_NUM}
         - AnsibleV=2.6.4
-        - DockerV=18.03.1~ce-0~debian
-        - DockerComposeV=1.22.0   #https://github.com/docker/compose/releases
+        - DockerV=5:18.09.2~3-0~debian-stretch
+        - DockerComposeV=1.23.2 #1.22.0   #https://github.com/docker/compose/releases
       context: ./ #./vsts/ansible/docker
       dockerfile: ./vsts/ansible/docker/Dockerfile #Dockerfile
     environment:
@@ -187,8 +189,8 @@ services:
       args:
         - BasedOn=vsts
         - BuildNo=${CIRCLE_BUILD_NUM}
-        - DockerV=18.03.1~ce-0~debian
-        - DockerComposeV=1.22.0   #https://github.com/docker/compose/releases
+        - DockerV=5:18.09.2~3-0~debian-stretch
+        - DockerComposeV=1.23.2 #1.22.0   #https://github.com/docker/compose/releases
       context: ./ #./vsts/ansible/docker
       dockerfile: ./vsts/docker/Dockerfile #Dockerfile
     environment:

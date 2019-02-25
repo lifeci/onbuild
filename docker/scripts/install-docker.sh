@@ -1,5 +1,16 @@
 #/bin/bash
-#DockerV=$1;
+DockerV=$1;
+Subject=$2;
+
+#docker-ce-cli or docker-ce
+if [ -z $Subject ]; then
+  echo "installing cli + runtime"
+  Subject=docker-ce
+else
+  echo "installing cli only"
+  Subject=docker-ce-cli
+fi;
+
 printf "\nGonna install:\tDockerV: $DockerV \n\n"
 # update repo
 apt-get update
@@ -18,9 +29,11 @@ add-apt-repository \
    stable"
 apt-get update
 
-apt-cache show docker-ce |  grep 'Version'
+
+
+apt-cache show $Subject |  grep 'Version'
 apt-get install --no-install-recommends -y \
-    docker-ce=$DockerV
+    $Subject=$DockerV
 
 #postIntall: https://docs.docker.com/engine/installation/linux/linux-postinstall/#chkconfig
 #groupadd docker --force
