@@ -109,6 +109,7 @@ services:
     depends_on:
       - base
     image: lifeci/onbuild:vsts${CIRCLE_BUILD_NUM}
+    #entrypoint: sleep 9999
     #entrypoint:  cat /vsts/start.sh
     # /vsts/agent/bin/Agent.Listener --version
 
@@ -125,7 +126,11 @@ services:
       - VSTS_ACCOUNT=${VSTS_ACCOUNT}
       - VSTS_POOL=${VSTS_POOL}
       - VSTS_TOKEN=${VSTS_TOKEN}
-      - VSTS_AGENT_VERSION=2.146.0
+      - VSTS_AGENT_VERSION=2.150.0
+      - VSTS_DEPLOYMENT_GRP_NAME=OnPrem-DEV-DEMO
+      - VSTS_DEPLOYMENT_PROJECT=vibes
+      - VSTS_DEPLOYMENT_TAGS=a1, b2
+      - VSTS_DEPLOYMENT_POOL=pool1
       #https://github.com/Microsoft/azure-pipelines-agent/releases
 ## END BLOCK ##
 

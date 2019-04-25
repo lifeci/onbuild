@@ -1,7 +1,8 @@
 #!/bin/bash
+mode=$1
 set -e
 
-export VSO_AGENT_IGNORE=_,MAIL,OLDPWD,PATH,PWD,VSTS_AGENT,VSTS_ACCOUNT,VSTS_TOKEN_FILE,VSTS_TOKEN,VSTS_POOL,VSTS_WORK,VSO_AGENT_IGNORE
+export VSO_AGENT_IGNORE=_,MAIL,OLDPWD,PATH,PWD,VSTS_AGENT,VSTS_ACCOUNT,VSTS_TOKEN_FILE,VSTS_TOKEN,VSTS_POOL,VSTS_WORK,VSO_AGENT_IGNORE,VSTS_AGENT,VSTS_ACCOUNT,VSTS_TOKEN,VSTS_DEPLOYMENT_PROJECT,VSTS_DEPLOYMENT_GRP_NAME,VSTS_DEPLOYMENT_TAGS
 if [ -n "$VSTS_AGENT_IGNORE" ]; then
   export VSO_AGENT_IGNORE=$VSO_AGENT_IGNORE,VSTS_AGENT_IGNORE,$VSTS_AGENT_IGNORE
 fi
@@ -82,7 +83,21 @@ echo Downloading and installing VSTS agent...
 curl -LsS $VSTS_AGENT_URL | tar -xz --no-same-owner & wait $!
 
 source ./env.sh
-
+if [ $mode == deployment ]; then
+  echo "run as mode: $mode | VSTS_DEPLOYMENT_GRP_NAME: $VSTS_DEPLOYMENT_GRP_NAME | VSTS_DEPLOYMENT_PROJECT: $VSTS_DEPLOYMENT_PROJECT | VSTS_DEPLOYMENT_TAGS: $VSTS_DEPLOYMENT_TAGS"
+  ./bin/Agent.Listener configure --unattended --deploymentGroup \
+    --agent "${VSTS_AGENT:-$(hostname)}" \
+    --url "https://dev.azure.com/$VSTS_ACCOUNT" \
+    --auth pat \
+    --token $(cat "$VSTS_TOKEN_FILE") \
+    --deploymentGroupName "${VSTS_DEPLOYMENT_GRP_NAME}" \
+    --projectname "${VSTS_DEPLOYMENT_PROJECT}" \
+    --addDeploymentGroupTags --DeploymentGroupTags "${VSTS_DEPLOYMENT_TAGS}" \
+    --DeploymentPoolName "${VSTS_DEPLOYMENT_POOL}" \
+    --work "${VSTS_WORK:-_work}" \
+    --replace & wait $!
+    # AGENT_ALLOW_RUNASROOT=true ./config.sh --help
+else
 ./bin/Agent.Listener configure --unattended \
   --agent "${VSTS_AGENT:-$(hostname)}" \
   --url "https://dev.azure.com/$VSTS_ACCOUNT" \
@@ -91,6 +106,7 @@ source ./env.sh
   --pool "${VSTS_POOL:-Default}" \
   --work "${VSTS_WORK:-_work}" \
   --replace & wait $!
+fi;
 
 web-server &
 ./bin/Agent.Listener run & wait $!
