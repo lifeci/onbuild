@@ -128,7 +128,7 @@ services:
       - VSTS_TOKEN=${VSTS_TOKEN}
       - VSTS_AGENT_VERSION=2.150.0
       - VSTS_DEPLOYMENT_GRP_NAME=OnPrem-DEV-DEMO
-      - VSTS_DEPLOYMENT_PROJECT=vibes
+      - VSTS_DEPLOYMENT_PROJECT=Project1
       - VSTS_DEPLOYMENT_TAGS=a1, b2
       - VSTS_DEPLOYMENT_POOL=pool1
       #https://github.com/Microsoft/azure-pipelines-agent/releases
