@@ -8,8 +8,11 @@ ARG VirtEnvV
 ARG BuildNo
 RUN echo "$BuildNo" > ./BuildNo
 
-RUN apt update; apt-get install -y --no-install-recommends \
-    python-pip python-setuptools python-wheel jq openssh-client curl ssh-askpass
+RUN apt update; \
+    apt install -y --no-install-recommends \
+        python-pip python-setuptools python-wheel \
+        jq openssh-client curl ssh-askpass \
+        gettext-base;
 
 RUN pip install virtualenv==$VirtEnvV
     # package~=15.* | "package>=0.2,<0.3" |
