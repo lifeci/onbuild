@@ -32,7 +32,7 @@ fi
 #SIGTERM is 15 | SIGINT is 2 | SIGKILL is 9
 #trap "echo 'Got SIGINT'; kill -SIGINT $PID" INT
 #trap "echo 'Got SIGTERM'; kill -SIGTERM $PID" TERM
-if [ -n $VSTS_DEPLOYMENT_GRP_NAME ]; then
+if [ -n "$VSTS_DEPLOYMENT_GRP_NAME" ]; then
   ./start_$RunAs.sh deployment
 else
   ./start_$RunAs.sh
