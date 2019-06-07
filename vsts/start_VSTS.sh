@@ -83,7 +83,7 @@ echo Downloading and installing VSTS agent...
 curl -LsS $VSTS_AGENT_URL | tar -xz --no-same-owner & wait $!
 
 source ./env.sh
-if [ $mode == deployment ]; then
+if [ "$mode" == "deployment" ]; then
   echo "run as mode: $mode | VSTS_DEPLOYMENT_GRP_NAME: $VSTS_DEPLOYMENT_GRP_NAME | VSTS_DEPLOYMENT_PROJECT: $VSTS_DEPLOYMENT_PROJECT | VSTS_DEPLOYMENT_TAGS: $VSTS_DEPLOYMENT_TAGS"
   ./bin/Agent.Listener configure --unattended --deploymentGroup \
     --agent "${VSTS_AGENT:-$(hostname)}" \
