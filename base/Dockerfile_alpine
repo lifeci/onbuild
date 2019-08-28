@@ -1,0 +1,22 @@
+ARG AlpineV
+FROM alpine:${AlpineV}
+#MAINTAINER or lable rj@lifeci.dev
+
+ARG BuildNo
+RUN echo "$BuildNo" > ./BuildNo
+
+# switch to regular account
+ARG GrpName=agroup
+ARG GrpUID=1100
+ARG UsrName=auser
+ARG UsrUID=1000
+RUN addgroup -g ${GrpUID} ${GrpName}; \
+    adduser -D -u ${UsrUID} ${UsrName} -G ${GrpName}; #\
+#    apk add openssh-client -y
+
+#USER ${UsrName}
+RUN  whoami;uname -a;
+#CMD printf "USAGE:\t docker run --rm lifeci/onbuild:base_alpine$(cat ./BuildNo) ansible --help\n"
+# https://github.com/oktadeveloper/okta-aws-cli-assume-role/releases
+# https://releases.hashicorp.com/terraform/0.11.14/terraform_0.11.14_linux_amd64.zip
+# https://github.com/gruntwork-io/terragrunt/releases/download/v0.18.7/terragrunt_linux_amd64

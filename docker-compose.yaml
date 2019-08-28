@@ -1,6 +1,5 @@
 ---
 version: '3.6'
-#last version 3.7 required 18.06+ of docker: https://docs.docker.com/compose/compose-file/
 
 ## START BLOCK ##
 services:
@@ -67,6 +66,47 @@ services:
     volumes:
        - ${HOME}/.ssh/id_rsa-vtx:/etc/ssh/id_rsa:ro
        - ${HOME}/.ssh/id_rsa-vtx.pub:/etc/ssh/id_rsa.pub:ro
+## END BLOCK ##
+
+## START BLOCK ##
+  base_alpine:
+    image: lifeci/onbuild:base_alpine${CIRCLE_BUILD_NUM}
+    #entrypoint: cat /etc/os-release
+    entrypoint: sleep 1d
+    build:
+      args:
+        - BuildNo=${CIRCLE_BUILD_NUM}
+        - AlpineV=3.10.2
+      context: ./base
+      dockerfile: Dockerfile_alpine
+## END BLOCK ##
+
+
+## START BLOCK ##
+  tf_tg:
+    image: lifeci/onbuild:tf_tg${CIRCLE_BUILD_NUM}
+    #entrypoint: cat /etc/os-release
+    build:
+      args:
+        - BuildNo=${CIRCLE_BUILD_NUM}
+        - tf_V=0.11.14
+        - tg_V=0.18.7
+      context: ./tf_tg
+      dockerfile: Dockerfile
+## END BLOCK ##
+
+
+## START BLOCK ##
+  aws_okta:
+    image: lifeci/onbuild:tf_tg-aws_okta${CIRCLE_BUILD_NUM}
+    #entrypoint: cat /etc/os-release
+    build:
+      args:
+        - BuildNo=${CIRCLE_BUILD_NUM}
+        - aws_V=0.11.14
+        - okta_V=0.22.1
+      context: ./tf_tg/aws_okta
+      dockerfile: Dockerfile
 ## END BLOCK ##
 
 ## START BLOCK ##
