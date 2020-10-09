@@ -1,5 +1,5 @@
 ---
-version: '3.6'
+version: "3.6"
 
 ## START BLOCK ##
 services:
@@ -13,9 +13,9 @@ services:
         - VirtEnvV=16.0.0
       context: ./base
       dockerfile: Dockerfile
-## END BLOCK ##
+  ## END BLOCK ##
 
-## START BLOCK ##
+  ## START BLOCK ##
   docker:
     depends_on:
       - base
@@ -31,9 +31,9 @@ services:
       dockerfile: Dockerfile
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
-## END BLOCK ##
+  ## END BLOCK ##
 
-## START BLOCK ##
+  ## START BLOCK ##
   aws:
     depends_on:
       - base
@@ -47,9 +47,9 @@ services:
         - AWSiamV=1.11.5/2018-12-06
       context: ./aws
       dockerfile: Dockerfile
-## END BLOCK ##
+  ## END BLOCK ##
 
-## START BLOCK ##
+  ## START BLOCK ##
   # ssh-keygen -b 2048 -t rsa -f ~/.ssh/id_rsa-vtx -q -N ""
   ansible_alpine:
     #depends_on:
@@ -60,15 +60,15 @@ services:
     build:
       args:
         - BuildNo=${CIRCLE_BUILD_NUM}
-        - AnsibleV=2.6.3
+        - AnsibleV=2.10.0
       context: ./ansible
       dockerfile: Dockerfile_alpine
     volumes:
-       - ${HOME}/.ssh/id_rsa-vtx:/etc/ssh/id_rsa:ro
-       - ${HOME}/.ssh/id_rsa-vtx.pub:/etc/ssh/id_rsa.pub:ro
-## END BLOCK ##
+      - ${HOME}/.ssh/id_rsa-vtx:/etc/ssh/id_rsa:ro
+      - ${HOME}/.ssh/id_rsa-vtx.pub:/etc/ssh/id_rsa.pub:ro
+  ## END BLOCK ##
 
-## START BLOCK ##
+  ## START BLOCK ##
   base_alpine:
     image: lifeci/onbuild:base_alpine${CIRCLE_BUILD_NUM}
     #entrypoint: cat /etc/os-release
@@ -79,10 +79,9 @@ services:
         - AlpineV=3.10.2
       context: ./base
       dockerfile: Dockerfile_alpine
-## END BLOCK ##
+  ## END BLOCK ##
 
-
-## START BLOCK ##
+  ## START BLOCK ##
   tf_tg:
     image: lifeci/onbuild:tf_tg${CIRCLE_BUILD_NUM}
     #entrypoint: cat /etc/os-release
@@ -93,10 +92,9 @@ services:
         - tg_V=0.18.7
       context: ./tf_tg
       dockerfile: Dockerfile
-## END BLOCK ##
+  ## END BLOCK ##
 
-
-## START BLOCK ##
+  ## START BLOCK ##
   aws_okta:
     image: lifeci/onbuild:tf_tg-aws_okta${CIRCLE_BUILD_NUM}
     #entrypoint: cat /etc/os-release
@@ -107,9 +105,9 @@ services:
         - okta_V=0.22.1
       context: ./tf_tg/aws_okta
       dockerfile: Dockerfile
-## END BLOCK ##
+  ## END BLOCK ##
 
-## START BLOCK ##
+  ## START BLOCK ##
   # ssh-keygen -b 2048 -t rsa -f ~/.ssh/id_rsa-vtx -q -N ""
   ansible:
     depends_on:
@@ -120,16 +118,16 @@ services:
     build:
       args:
         - BuildNo=${CIRCLE_BUILD_NUM}
-        - AnsibleV=2.6.4
+        - AnsibleV=${ANSIBLE_VERSION}
+        #2.2.1.0-2+deb9u1
       context: ./ansible
       dockerfile: Dockerfile
     volumes:
-       - ${HOME}/.ssh/id_rsa-vtx:/etc/ssh/id_rsa:ro
-       - ${HOME}/.ssh/id_rsa-vtx.pub:/etc/ssh/id_rsa.pub:ro
-## END BLOCK ##
+      - ${HOME}/.ssh/id_rsa-vtx:/etc/ssh/id_rsa:ro
+      - ${HOME}/.ssh/id_rsa-vtx.pub:/etc/ssh/id_rsa.pub:ro
+  ## END BLOCK ##
 
-
-## START BLOCK ##
+  ## START BLOCK ##
   azure:
     #depends_on:
     #  - base
@@ -141,127 +139,125 @@ services:
         #- AWScliV=1.11.156
       context: ./azure
       dockerfile: Dockerfile
-## END BLOCK ##
+  ## END BLOCK ##
 
-
-## START BLOCK ##
-  vsts:
+  ## START BLOCK ##
+  azp:
     depends_on:
       - base
-    image: lifeci/onbuild:vsts${CIRCLE_BUILD_NUM}
+    image: lifeci/onbuild:azp${CIRCLE_BUILD_NUM}
     #entrypoint: sleep 9999
-    #entrypoint:  cat /vsts/start.sh
-    # /vsts/agent/bin/Agent.Listener --version
+    #entrypoint:  cat /azp/start.sh
+    # /azp/agent/bin/Agent.Listener --version
 
-      #agent/bin/Agent.Listener --version
+    #agent/bin/Agent.Listener --version
     build:
       args:
         - BuildNo=${CIRCLE_BUILD_NUM}
         #- AWScliV=1.11.156
-      context: ./vsts
+      context: ./azp
       dockerfile: Dockerfile
     environment:
-      - VSTS_AGENT=${VSTS_AGENT}
-      - VSTS_WORK=${VSTS_WORK}
-      - VSTS_ACCOUNT=${VSTS_ACCOUNT}
-      - VSTS_POOL=${VSTS_POOL}
-      - VSTS_TOKEN=${VSTS_TOKEN}
-      - VSTS_AGENT_VERSION=2.150.0
-      - VSTS_DEPLOYMENT_GRP_NAME=OnPrem-DEV-DEMO
-      - VSTS_DEPLOYMENT_PROJECT=Project1
-      - VSTS_DEPLOYMENT_TAGS=a1, b2
-      - VSTS_DEPLOYMENT_POOL=pool1
-      #https://github.com/Microsoft/azure-pipelines-agent/releases
-## END BLOCK ##
+      - AZP_AGENT=${AZP_AGENT}
+      - AZP_WORK=${AZP_WORK}
+      - AZP_ACCOUNT=${AZP_ACCOUNT}
+      - AZP_POOL=${AZP_POOL}
+      - AZP_TOKEN=${AZP_TOKEN}
+      - AZP_AGENT_VERSION=${AZP_AGENT_VERSION}
 
-## START BLOCK ##
-  vstssql:
+      - AZP_DEPLOYMENT_GRP_NAME=${AZP_DEPLOYMENT_GRP_NAME}
+      - AZP_DEPLOYMENT_PROJECT=${AZP_DEPLOYMENT_PROJECT}
+      - AZP_DEPLOYMENT_TAGS=${AZP_DEPLOYMENT_TAGS}
+      - AZP_DEPLOYMENT_POOL=${AZP_DEPLOYMENT_POOL}
+      #https://github.com/Microsoft/azure-pipelines-agent/releases
+  ## END BLOCK ##
+
+  ## START BLOCK ##
+  azpsql:
     depends_on:
-      - vsts
-    image: lifeci/onbuild:vstssql${CIRCLE_BUILD_NUM}
+      - azp
+    image: lifeci/onbuild:azpsql${CIRCLE_BUILD_NUM}
     entrypoint: sqlpackage
     #entrypoint: sqlcmd
     build:
       args:
         - BuildNo=${CIRCLE_BUILD_NUM}
-      context: ./vsts/sql
+      context: ./azp/sql
       dockerfile: Dockerfile
-## END BLOCK ##
+  ## END BLOCK ##
 
-## START BLOCK ##
-  vstsansible:
+  ## START BLOCK ##
+  azpansible:
     depends_on:
-      - vsts
-    image: lifeci/onbuild:vstsansible${CIRCLE_BUILD_NUM}
+      - azp
+    image: lifeci/onbuild:azpansible${CIRCLE_BUILD_NUM}
     entrypoint: ansible --version
     build:
       args:
         - BuildNo=${CIRCLE_BUILD_NUM}
-        - AnsibleV=2.6.4
+        - AnsibleV=${ANSIBLE_VERSION}
         #- AWScliV=1.11.156
-      context: ./vsts/ansible
+      context: ./azp/ansible
       dockerfile: Dockerfile
     environment:
       - Key=Val
-## END BLOCK ##
+  ## END BLOCK ##
 
-## START BLOCK ##
-  vstsansibledocker:
+  ## START BLOCK ##
+  azpansibledocker:
     depends_on:
-      - vstsansible
-    image: lifeci/onbuild:vstsansibledocker${CIRCLE_BUILD_NUM}
+      - azpansible
+    image: lifeci/onbuild:azpansibledocker${CIRCLE_BUILD_NUM}
     entrypoint: docker --version
     build:
       args:
         - BuildNo=${CIRCLE_BUILD_NUM}
-        - AnsibleV=2.6.4
+        - AnsibleV=${ANSIBLE_VERSION}
         - DockerV=5:18.09.2~3-0~debian-stretch
         - DockerComposeV=1.23.2 #1.22.0   #https://github.com/docker/compose/releases
-      context: ./ #./vsts/ansible/docker
-      dockerfile: ./vsts/ansible/docker/Dockerfile #Dockerfile
+      context: ./ #./azp/ansible/docker
+      dockerfile: ./azp/ansible/docker/Dockerfile #Dockerfile
     environment:
       - Key=Val
-## END BLOCK ##
+  ## END BLOCK ##
 
-
-## START BLOCK ##
-  vstsdocker:
+  ## START BLOCK ##
+  azpdocker:
     depends_on:
-      - vsts
-    image: lifeci/onbuild:vstsdocker${CIRCLE_BUILD_NUM}
+      - azp
+    image: lifeci/onbuild:azpdocker${CIRCLE_BUILD_NUM}
     entrypoint: docker --version
     build:
       args:
-        - BasedOn=vsts
+        - BasedOn=azp
         - BuildNo=${CIRCLE_BUILD_NUM}
         - DockerV=5:18.09.2~3-0~debian-stretch
         - DockerComposeV=1.23.2 #1.22.0   #https://github.com/docker/compose/releases
-      context: ./ #./vsts/ansible/docker
-      dockerfile: ./vsts/docker/Dockerfile #Dockerfile
+      context: ./ #./azp/ansible/docker
+      dockerfile: ./azp/docker/Dockerfile #Dockerfile
     environment:
       - Key=Val
-## END BLOCK ##
+  ## END BLOCK ##
 
-## START BLOCK ##
-  vstsaws:
+  ## START BLOCK ##
+  azpaws:
     depends_on:
-      - vsts
-    image: lifeci/onbuild:vstsaws${CIRCLE_BUILD_NUM}
+      - azp
+    image: lifeci/onbuild:azpaws${CIRCLE_BUILD_NUM}
     entrypoint: aws --version
     build:
       args:
-        - BasedOn=vsts
+        - BasedOn=azp
         - BuildNo=${CIRCLE_BUILD_NUM}
         - AWScliV=1.16.105 #1.11.156
         - AWSiamV=1.11.5/2018-12-06
-      context: ./ #./vsts/ansible/docker
-      dockerfile: ./vsts/aws/Dockerfile #Dockerfile
+      context: ./ #./azp/ansible/docker
+      dockerfile: ./azp/aws/Dockerfile #Dockerfile
     environment:
       - Key=Val
-## END BLOCK ##
+  ## END BLOCK ##
 
-
-## START BLOCK ##
+  ## START BLOCK ##
   k8s:
     depends_on:
       - base
@@ -272,54 +268,70 @@ services:
         - BasedOn=base
         - BuildNo=${CIRCLE_BUILD_NUM}
         - K8sCliV=v1.13.3
-      context: ./k8s #./vsts/ansible/docker
+      context: ./k8s #./azp/ansible/docker
       dockerfile: Dockerfile #Dockerfile
     environment:
       - Key=Val
-## END BLOCK ##
+    ## END BLOCK ##
 
-## START BLOCK ##
-  vstsk8s:
+  ## START BLOCK ##
+  runner:
     depends_on:
-      - vsts
-    image: lifeci/onbuild:vstsk8s${CIRCLE_BUILD_NUM}
+      - base
+    image: lifeci/onbuild:runner${CIRCLE_BUILD_NUM}
+    #entrypoint: kubectl version --client=true
+    build:
+      args:
+        - BasedOn=base
+        - BuildNo=${CIRCLE_BUILD_NUM}
+        - RunnerVersion=2.273.0
+      context: ./runner #./azp/ansible/docker
+      dockerfile: Dockerfile #Dockerfile
+    environment:
+      - GH_URL=${GH_URL}
+      - GH_TOKEN=${GH_TOKEN}
+  ## END BLOCK ##
+
+  ## START BLOCK ##
+  azpk8s:
+    depends_on:
+      - azp
+    image: lifeci/onbuild:azpk8s${CIRCLE_BUILD_NUM}
     entrypoint: kubectl version --client=true
     build:
       args:
-        - BasedOn=vsts
+        - BasedOn=azp
         - BuildNo=${CIRCLE_BUILD_NUM}
         - K8sCliV=v1.13.3
-      context: ./ #./vsts/ansible/docker
-      dockerfile: ./vsts/k8s/Dockerfile #Dockerfile
+      context: ./ #./azp/ansible/docker
+      dockerfile: ./azp/k8s/Dockerfile #Dockerfile
     environment:
       - Key=Val
-## END BLOCK ##
+  ## END BLOCK ##
 
-
-## START BLOCK ##
-  vstsawsk8s:
+  ## START BLOCK ##
+  azpawsk8s:
     depends_on:
-      - vstsaws
-    image: lifeci/onbuild:vstsaws${CIRCLE_BUILD_NUM}
+      - azpaws
+    image: lifeci/onbuild:azpaws${CIRCLE_BUILD_NUM}
     entrypoint: kubectl version --client=true
     build:
       args:
-        - BasedOn=vstsaws
+        - BasedOn=azpaws
         - BuildNo=${CIRCLE_BUILD_NUM}
         - K8sCliV=v1.13.3
-      context: ./ #./vsts/ansible/docker
-      dockerfile: ./vsts/aws/k8s/Dockerfile #Dockerfile
+      context: ./ #./azp/ansible/docker
+      dockerfile: ./azp/aws/k8s/Dockerfile #Dockerfile
     environment:
       - Key=Val
-## END BLOCK ##
+  ## END BLOCK ##
 
-
-## START BLOCK ##
+  ## START BLOCK ##
   # docker-compose build node0; docker-compose scale node0=3
   node0:
     #image: centos:centos7.5.1804
     #entrypoint: yum -y install openssh-server; chkconfig sshd on; /usr/sbin/sshd -D
-#    command:
+    #    command:
     build:
       args:
         - BuildNo=${CIRCLE_BUILD_NUM}
@@ -331,5 +343,5 @@ services:
     ports:
       - 2201-2210:22
     volumes:
-       - ${HOME}/.ssh/id_rsa-vtx.pub:/etc/ssh/id_rsa.pub:ro
+      - ${HOME}/.ssh/id_rsa-vtx.pub:/etc/ssh/id_rsa.pub:ro
 ## END BLOCK ##

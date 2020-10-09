@@ -1,4 +1,4 @@
-ARG BasedOn=vsts
+ARG BasedOn=azp
 ARG BuildNo
 FROM lifeci/onbuild:${BasedOn}${BuildNo}
 ARG DockerV

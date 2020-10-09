@@ -7,13 +7,9 @@ ARG BuildNo
 RUN echo "$BuildNo" > ./BuildNo
 
 RUN pip install --upgrade pip;
-RUN pip install ansible==$AnsibleV;
-#RUN  apk --update add sudo python py-pip openssl ca-certificates; \
-#     apk --update add --virtual build-dependencies python-dev \
-#     libffi-dev openssl-dev build-base; \
-#     pip install --upgrade pip cffi ansible==$AnsibleV; \
-#     apk del build-dependencies python-dev libffi-dev build-base; \
-#     rm -rf /var/cache/apk/*
+
+RUN apt update && apt-cache madison ansible && apt install ansible=$AnsibleV -y
+#RUN pip install ansible=$AnsibleV;
 
 # switch to regular account
 ARG GrpName=agroup
