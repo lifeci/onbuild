@@ -1,10 +1,10 @@
 ARG BuildNo
-ARG BasedOn=vsts
+ARG BasedOn=azp
 FROM lifeci/onbuild:${BasedOn}${BuildNo}
 
 ARG AWScliV
 ARG AWSiamV
-COPY ./vsts/aws/*.sh ./
+COPY ./azp/aws/*.sh ./
 RUN ./install-aws-cli.sh ${AWScliV}; \
     ./install-aws-iam-auth.sh ${AWSiamV};
 

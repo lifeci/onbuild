@@ -22,14 +22,14 @@ RUN apt update \
 
 # Accept the TEE EULA
 RUN mkdir -p "/root/.microsoft/Team Foundation/4.0/Configuration/TEE-Mementos" \
- && cd "/root/.microsoft/Team Foundation/4.0/Configuration/TEE-Mementos" \
- && echo '<ProductIdData><eula-14.0 value="true"/></ProductIdData>' > "com.microsoft.tfs.client.productid.xml"
+        && cd "/root/.microsoft/Team Foundation/4.0/Configuration/TEE-Mementos" \
+        && echo '<ProductIdData><eula-14.0 value="true"/></ProductIdData>' > "com.microsoft.tfs.client.productid.xml"
 
-WORKDIR /vsts
+WORKDIR /azp
 
 COPY ./*.sh ./
-RUN chmod +x start.sh; chmod 777 -R /vsts
-RUN ls -la  /vsts
+RUN chmod +x start.sh; chmod 777 -R /azp
+RUN ls -la  /azp
 
 STOPSIGNAL SIGTERM
 #  SIGTERM -> exit 143' TERM | SIGINT -> exit 130' INT
